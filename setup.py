@@ -1,5 +1,5 @@
-__title__ = 'pygatt'
-__version__ = '4.0.5'
+__title__ = 'aleapygatt'
+__version__ = '66.0.5'
 __license__ = 'Apache License, Version 2.0 and MIT License'
 __copyright__ = 'Copyright 2015 Stratos Inc. and Orion Labs'
 
@@ -16,14 +16,14 @@ with open('CHANGELOG.rst') as f:
 setup(
     name=__title__,
     version=__version__,
-    description='Python Bluetooth LE (Low Energy) and GATT Library',
-    author='Chris Peplin <github@rhubarbtech.com>',
-    author_email='github@rhubarbtech.com',
+    description='Python Bluetooth LE (Low Energy) and GATT Library, forked from https://github.com/peplin/pygatt version 4.0.5',
+    author='Philip Lo',
+    author_email='lophilip@outlook.com',
     packages=find_packages(exclude=("tests", "tests.*")),
     package_data={'': ['LICENSE']},
     license="Apache 2.0 and MIT",
     long_description=readme + '\n\n' + changelog,
-    url='https://github.com/peplin/pygatt',
+    url='https://github.com/Alea-Labs/pygatt.git',
     install_requires=[
         'pyserial',
         'enum-compat'
