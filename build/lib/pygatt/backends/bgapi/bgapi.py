@@ -533,6 +533,9 @@ class BGAPIBackend(BLEBackend):
         Returns a name and a dictionary containing the parsed data in pairs of
         field_name': value.
         """
+
+        success=True
+
         # Result stored here
         data_dict = {
             # 'name': value,
@@ -552,8 +555,13 @@ class BGAPIBackend(BLEBackend):
                 bytes_left_in_field -= 1
                 if bytes_left_in_field == 0:
                     # End of field
-                    field_name = (
-                        constants.scan_response_data_type[field_value[0]])
+                    try:
+                        field_name = (
+                            constants.scan_response_data_type[field_value[0]])
+                    except:
+                        field_name=('invalid field name/field value')                        
+                        success=False
+                                                    
                     field_value = field_value[1:]
                     # Field type specific formats
                     if (field_name == 'complete_local_name' or
@@ -581,7 +589,7 @@ class BGAPIBackend(BLEBackend):
                                         len(field_value))
                     else:
                         data_dict[field_name] = bytearray(field_value)
-        return dev_name, data_dict
+        return success,dev_name, data_dict
 
     def expect(self, expected, *args, **kargs):
         return self.expect_any([expected], *args, **kargs)
@@ -768,7 +776,11 @@ class BGAPIBackend(BLEBackend):
         # Parse packet
         packet_type = constants.scan_response_packet_type[args['packet_type']]
         address = bgapi_address_to_hex(args['sender'])
-        name, data_dict = self._scan_rsp_data(args['data'])
+        namesuccess,name, data_dict = self._scan_rsp_data(args['data'])
+        if namesuccess!=True:
+            invalidnametext="uable to get valid name for address: "+address
+            log.debug(invalidnametext)
+            print(invalidnametext)
 
         # Store device information
         if address not in self._devices_discovered:
